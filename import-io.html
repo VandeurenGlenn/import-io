@@ -8,6 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../fetch-element/fetch-element.html">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -29,7 +30,77 @@ Example:
     is: 'import-io',
 
     properties: {
+      url: {
+        type: String
+        // observer: '_urlChanged'
+      },
 
+      /**
+      * Data returned from the import.io API
+      */
+      data: {
+        type: Object,
+        notify: true
+      },
+
+      /**
+      * The data type you desire, JSON(object), Array or csv
+      */
+      type: String,
+
+      /**
+      * Whether to process with javascript or not (slower).
+      */
+      js: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+      * Your import.io user id
+      */
+      userId: String,
+
+      /**
+      * Your import.io API key
+      */
+      apiKey: String,
+
+      auto: Boolean
+    },
+
+    observers: [
+      '_setUrl(url, auto, _fetchEl, userId, apiKey)'
+    ],
+
+    ready: function () {
+      this._fetchEl = document.createElement('fetch-element');
+    },
+
+    detached: function () {
+      this._removeEventListener(this._fetchEl, 'data-changed');
+    },
+
+    _setUrl: function (url) {
+      if (this.auto && this.url && this._fetchEl) {
+        this.urlToData(url);
+      }
+    },
+
+    urlToData: function (url) {
+      // this._fetchEl.mode = 'cors';
+      this._fetchEl.url = 'https://api.import.io/store/connector/_magic?url=' + encodeURI(url?url:this.url) + '&js=' + this.js + '&_user=' + this.userId + '&_apikey=' + this.apiKey;
+      this._fetchEl.fetch();
+      this._fetchEl.addEventListener('data-changed', this._dataChanged.bind(this));
+    },
+
+    _dataChanged: function (e) {
+      this.data = e.detail.value;
+      this._removeEventListener(this._fetchEl, 'data-changed');
+    },
+
+    _removeEventListener: function (el, eventName) {
+      el.removeEventListener(eventName);
     }
 
   });

@@ -1,23 +1,24 @@
 {
   "name": "import-io",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "authors": [
-    "Anonymous <anonymous@example.com>"
+    "Glenn Vandeuren <VandeurenGlenn@gmail.com>"
   ],
-  "description": "An element providing a solution to no problem in particular.",
+  "description": "An element wrapping the import.io api.",
   "keywords": [
     "web-component",
     "polymer",
     "seed"
   ],
   "main": "import-io.html",
-  "license": "http://polymer.github.io/LICENSE.txt",
-  "homepage": "https://github.com/<USERNAME>/seed-element/",
+  "license": "http://vandeurenglenn.github.io/LICENSE.txt",
+  "homepage": "https://github.com/VandeurenGlenn/import-io/",
   "ignore": [
     "/.*",
     "/test/"
   ],
   "dependencies": {
+    "fetch-element": "VandeurenGlenn/fetch-element#~1.0.3",
     "polymer": "Polymer/polymer#^1.0.0"
   },
   "devDependencies": {
